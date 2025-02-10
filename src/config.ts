@@ -10,8 +10,8 @@ const defaults = {
   },
   ws: {
     enable: true,
-    host: "string",
-    port: 8080,
+    host: "10.112.10.224",
+    port: 8000,
   },
 };
 

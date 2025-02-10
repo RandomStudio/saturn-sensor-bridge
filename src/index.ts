@@ -36,31 +36,35 @@ const main = async () => {
   }
 
   if (config.ws.enable) {
-    const websocketClient = new WebSocket("ws://192.168.2.4:8000");
+    const { host, port } = config.ws;
+    logger.info(`Connecting WS at ws://${host}:${port} ...`);
+    const websocketClient = new WebSocket(`ws://${host}:${port}`);
+
+    // logger.debug({ websocketClient });
 
     websocketClient.on("error", console.error);
 
-    websocketClient.on("open", function open() {
-      console.log("connected!");
+    websocketClient.on("open", () => {
+      logger.info("connected!");
+    });
 
-      websocketClient.on("message", (data, isBinary) => {
-        // console.log({ data, isBinary });
-        const value = data.toString();
-        logger.info("incoming from websockt:", value);
+    websocketClient.on("message", (data, isBinary) => {
+      // console.log({ data, isBinary });
+      const value = data.toString();
+      logger.info("incoming from websockt:", value);
 
-        if (udp && config.osc.enable) {
-          try {
-            const angleAsNumber = parseFloat(value);
-            const buf = toBuffer({
-              address: config.osc.address,
-              args: [angleAsNumber],
-            });
-            udp.send(buf, 0, buf.byteLength, config.osc.port, config.osc.host);
-          } catch (e) {
-            logger.error("Error sending OSC:", e);
-          }
+      if (udp && config.osc.enable) {
+        try {
+          const angleAsNumber = parseFloat(value);
+          const buf = toBuffer({
+            address: config.osc.address,
+            args: [angleAsNumber],
+          });
+          udp.send(buf, 0, buf.byteLength, config.osc.port, config.osc.host);
+        } catch (e) {
+          logger.error("Error sending OSC:", e);
         }
-      });
+      }
     });
   }
 };
