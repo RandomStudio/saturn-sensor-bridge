@@ -8,19 +8,20 @@
     "build": "npx tsc",
     "postinstall": "npm run build",
     "start": "npm run build && node dist/index.js",
-    "dev": "npm run build && node dist/index.js --loglevel=debug"
+    "dev": "npm run build && node dist/index.js --loglevel=debug --osc.initTest=true --ws.enable=false"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "log4js": "^6.3.0",
+    "log4js": "^6.9.1",
+    "osc-min": "^2.1.2",
     "parse-strings-in-object": "^1.6.0",
     "rc": "^1.2.8",
     "ws": "^8.18.0"
   },
   "devDependencies": {
-    "@tsconfig/node20": "^20.1.2",
-    "@types/node": "^14.14.37",
+    "@tsconfig/node22": "^22.0.0",
+    "@types/node": "^22.13.1",
     "@types/rc": "^1.1.0",
     "@types/ws": "^8.5.13",
     "prettier": "^2.2.1",
